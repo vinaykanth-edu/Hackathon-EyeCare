@@ -1,6 +1,27 @@
 {
     "name": "Hackathon-EyeCare",
     "version": "1.0",
-    "description": "Build an Extension to prevent Eyes straining.",
-    "manifest_version": 2
+    "description": "Build an Extension to prevent Eye straining.",
+    "manifest_version": 2,
+    "icons" : {
+        "128" : "icon128.png",
+        "48" : "icon48.png",
+        "16" :  "icon16.png"
+    },
+    "default_locale": "en",
+    "background": {
+      "scripts": [
+        "background.js"
+      ],
+      "persistent": true
+    },
+    "permissions": [
+      "storage",
+      "notifications"
+    ],
+    "browser_action" : {
+        "default_icon" : "icon16.png",
+        "default_popup" : "popup.html",
+        "default_title": "browser action demo"
+    }
   }
