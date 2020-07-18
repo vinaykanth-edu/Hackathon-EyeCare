@@ -1,0 +1,6 @@
+{
+    "name": "Hackathon-EyeCare",
+    "version": "1.0",
+    "description": "Build an Extension to prevent Eyes straining.",
+    "manifest_version": 2
+  }
