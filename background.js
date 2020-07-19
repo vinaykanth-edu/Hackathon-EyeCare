@@ -1,44 +1,49 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
+var intBlinkInterval, timer;
+//default value!
+intBlinkInterval = 20;
 
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
+var intOldNotifID, intNewNotifID;
+intOldNotifID = 0;
 
 
-//example of using a message handler from the inject scripts
 
-var tasks = [{ name: "taskname", isCompleted: true, remindOn: 0 }]
-
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  // First, validate the message's structure.
-
-  console.log("am called", msg)
-
-});
-
-// chrome.extension.onMessage.addListener(
-//   function (request, sender, sendResponse) {
-//     chrome.pageAction.show(sender.tab.id);
-//     sendResponse();
-//   });
-
-function saveInLocalStorage(tasks) {
-  chrome.storage.local.set({ tasks }, function () {
-    console.log('Value is set to ' + value);
-  });
-}
-
-function getFromLocalStorage() {
-  chrome.storage.local.get(['tasks'], function (result) {
-    console.log('Value currently is ' + result.key);
-  });
+//check if the interval is saved in the storage
+if (parseInt(localStorage.BlinkInterval,10) > 0){
+    console.log("intblink: " + intBlinkInterval + " storage: " + localStorage.BlinkInterval);
+    //check if the stored Blink Interval is different from default
+    if (localStorage.BlinkInterval !== intBlinkInterval){
+        intBlinkInterval = localStorage.BlinkInterval;
+        
+    }else{
+        //console.log(intBlinkInterval + " not equal!");
+    }
+}else{
+    console.log("No Interval in the Storage!");
+    localStorage.BlinkInterval = intBlinkInterval;
+    //Do Nothing!
 }
 
 
+//The main blink notifier
+function Notifier() {
+    var opt = {
+        type: 'basic',
+        title: 'Eye Rest!',
+        message: 'You\'ve been staring at the screen for ' + intBlinkInterval + ' minutes straight.\n It\'s time to get your eyes off the screen!',
+        priority: 1,
+    };
+}
 
 
 
+timer = setInterval(Notifier, intBlinkInterval * 60 * 1000);
 
 
-
-
+setInterval(function(){
+    // console.log('Interval Loaded; storage:' + localStorage.BlinkInterval + '; intblink: '+ intBlinkInterval);
+    if (intBlinkInterval !== localStorage.BlinkInterval){
+        intBlinkInterval = localStorage.BlinkInterval;
+        clearInterval(timer);
+        timer = setInterval(Notifier, intBlinkInterval * 60 * 1000);
+    }
+},1000)
